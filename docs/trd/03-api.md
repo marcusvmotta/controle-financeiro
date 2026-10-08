@@ -9,7 +9,7 @@ Os endpoints de cada módulo estão nos arquivos de [`modulos/`](README.md#módu
 - Prefixo `/api`. Sem versionamento no MVP: há um único cliente (o próprio frontend), publicado junto com a API. Se surgir um segundo cliente, adotar `/api/v1`.
 - Recursos no plural e em inglês: `/api/accounts`, `/api/transactions`.
 - JSON em `camelCase`; enums como **string** (`"Expense"`, não `1`).
-- Todas as rotas exigem autenticação, exceto `register`, `login`, `refresh`, `logout`, `demo`, `config` (todas em `/api/auth`) e `/health/*`.
+- Todas as rotas exigem autenticação, exceto `register`, `login`, `refresh`, `logout`, `demo`, `config` (todas em `/api/auth`) e `/health/*`. `/swagger` e `/hangfire` têm regras próprias por ambiente ([07-observabilidade.md](07-observabilidade.md#painel-do-hangfire)).
 - Documentação via **Swagger/OpenAPI** em `/swagger` (habilitado em dev e na demo), com botão "Authorize" para colar o JWT.
 
 ## Formatos

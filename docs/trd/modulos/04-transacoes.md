@@ -75,12 +75,12 @@ Resposta: `{ "pairId": "...", "outgoing": { ...transação... }, "incoming": { .
 ## Regras de negócio (service)
 
 1. Conta e categoria precisam existir e ser do usuário (query filter → `404` se não).
-2. Conta não pode estar arquivada (`422`). Categoria arquivada também não (`422`).
+2. Ao **criar**, ou ao **mudar** a conta ou a categoria de uma transação, a nova conta e a nova categoria não podem estar arquivadas (`422`).
 3. `category.Type` precisa bater com `transaction.Type` (`422`).
 4. Transferência: as duas contas do usuário, não arquivadas, diferentes entre si.
 5. Criar, editar e excluir transferência sempre numa **transação de banco** (`SaveChangesAsync` único para os dois lados).
 6. `PUT /api/transactions/{id}` numa transferência → `422` orientando a usar o endpoint de transferência.
-7. Editar uma transação **arquivada** (em conta arquivada) é permitido, para corrigir histórico, desde que não mude para outra conta arquivada.
+7. Editar uma transação que **já está** numa conta ou categoria arquivada é permitido (para corrigir histórico), desde que não a mova para outra conta ou categoria arquivada (regra 2).
 
 ## Performance
 
