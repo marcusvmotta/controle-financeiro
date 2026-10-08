@@ -2,7 +2,7 @@
 
 [← Índice](README.md)
 
-> ⚠️ Este arquivo é o **ponto de partida para o TRD**. Tudo aqui é proposta inicial, e as decisões finais (com justificativa) serão registradas no Technical Requirements Document.
+> ⚠️ Este arquivo foi o **ponto de partida para o TRD** e está mantido como registro histórico. As decisões finais, com justificativa, estão no [TRD](../trd/README.md). Em caso de divergência, vale o TRD.
 
 ## Stack proposta
 
