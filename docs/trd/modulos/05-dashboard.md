@@ -42,7 +42,7 @@ Ordenado por `total` decrescente. `percentage` calculado no backend; arredondado
 ## Implementação
 
 - Agregação com `GroupBy` do EF Core sobre `date`, traduzida para `date_trunc('month', date)` (conferir o SQL gerado; se o EF não traduzir bem, usar `FromSql` com SQL parametrizado e comentar o motivo).
-- `IClock` fornece "hoje" no fuso do usuário, para os testes fixarem a data.
+- `TimeProvider` fornece "hoje" no fuso do usuário, para os testes fixarem a data.
 - **Consistência com a listagem** (teste obrigatório 7): o dashboard e `GET /api/transactions` usam o **mesmo método** de filtro por período/usuário.
 
 ## Frontend

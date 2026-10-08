@@ -6,7 +6,7 @@
 
 | Camada | Ferramentas | O que cobre | Quando roda |
 |--------|-------------|-------------|-------------|
-| **Unitários (backend)** | xUnit, FluentAssertions, NSubstitute | Regras de domínio, validators, services com dependências simuladas | Todo push (CI) |
+| **Unitários (backend)** | xUnit (`Assert`), NSubstitute | Regras de domínio, validators, services com dependências simuladas | Todo push (CI) |
 | **Integração (backend)** | `WebApplicationFactory`, **Testcontainers** (PostgreSQL real), Respawn | Endpoints HTTP de ponta a ponta com banco real: auth, isolamento, transferências, agregações do dashboard | Todo push (CI) |
 | **Unitários (frontend)** | Runner padrão do Angular CLI (Vitest nas versões recentes; confirmar no M0) + Angular Testing Library | Stores, interceptors, guards, pipes, formulários | Todo push (CI) |
 | **E2E** | Playwright | Fluxo principal: login demo → dashboard → lançar despesa → ver o gráfico mudar | *P2, depois do MVP* |
@@ -15,10 +15,13 @@
 
 ## Convenções
 
+> **Asserções:** a primeira versão do TRD citava FluentAssertions, mas a versão 8 passou a ter licença paga para uso comercial. Por enquanto usamos o `Assert` do xUnit; uma alternativa de código aberto (ex.: Shouldly) pode ser adotada se fizer falta.
+
+
 - Nome do teste no padrão `Metodo_Cenario_ResultadoEsperado`, por exemplo `CreateTransfer_SameAccount_ThrowsBusinessRule`.
 - Estrutura **Arrange / Act / Assert** visível no corpo do teste.
 - Um container Postgres por execução da suíte de integração (fixture compartilhada); o **Respawn** limpa as tabelas entre os testes.
-- `IClock` fixo nos testes, para "mês atual" e "hoje" serem determinísticos.
+- `TimeProvider` fixo nos testes (`FakeTimeProvider`), para "mês atual" e "hoje" serem determinísticos.
 - Builders de dados de teste (`TransactionBuilder`, `AccountBuilder`) para não repetir setup.
 
 ## Testes obrigatórios (não negociáveis)

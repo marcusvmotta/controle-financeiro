@@ -1,0 +1,7 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\FinanceControl.Domain\FinanceControl.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

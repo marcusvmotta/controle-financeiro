@@ -1,0 +1,25 @@
+# Segredos e configuração local
+.env
+*.local.json
+appsettings.*.local.json
+
+# .NET
+bin/
+obj/
+TestResults/
+*.user
+.vs/
+
+# Node / Angular
+node_modules/
+dist/
+.angular/
+coverage/
+
+# Editores e sistema
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/launch.json
+.DS_Store
+Thumbs.db
