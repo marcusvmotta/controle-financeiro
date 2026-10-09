@@ -49,7 +49,6 @@ cd frontend && npx ng lint && npx ng test --watch=false && npx ng build
 ## Status atual
 
 - Concluídos: PRD, TRD e **M0 (setup)** (PR #4).
-- Pendente do M0: confirmar `docker compose up --build` funcionando ponta a ponta (não pôde ser testado na máquina do trabalho).
 - Próximo: **M1 (autenticação)**, ver [docs/trd/modulos/01-autenticacao.md](docs/trd/modulos/01-autenticacao.md).
 - Em aberto: T10 (dados temporários da importação, Fase 2). Avaliar uma biblioteca de asserções de código aberto (FluentAssertions v8 mudou de licença).
 
