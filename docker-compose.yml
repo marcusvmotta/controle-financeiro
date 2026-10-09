@@ -27,6 +27,8 @@ services:
       ASPNETCORE_ENVIRONMENT: Production
       ConnectionStrings__Default: Host=db;Port=5432;Database=finance;Username=finance;Password=${POSTGRES_PASSWORD:-finance_dev}
       Swagger__Enabled: "true"
+      Database__MigrateOnStartup: "true"
+      Jwt__Key: ${JWT_KEY:-local-docker-key-NOT-for-production-0123456789}
     depends_on:
       db:
         condition: service_healthy

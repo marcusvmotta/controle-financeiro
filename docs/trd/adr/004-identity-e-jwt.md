@@ -24,3 +24,8 @@ Não usar os endpoints prontos do Identity (`MapIdentityApi`), porque eles emite
 - ✅ O fluxo de tokens fica explícito no código, o que é bom para estudo e para o portfólio.
 - ⚠️ As tabelas do Identity (`AspNetUsers` etc.) são renomeadas para `snake_case` no `OnModelCreating`, e as que não são usadas (roles, claims, logins externos) não são criadas.
 - ⚠️ A responsabilidade por rotação e revogação de refresh tokens é nossa (detalhada em [04-seguranca.md](../04-seguranca.md)).
+
+## Nota de implementação (M1)
+
+- Usamos `IdentityUserContext<AppUser, Guid>`, que não cria as tabelas de *roles*. As tabelas `user_claims`, `user_logins` e `user_tokens` existem (o Identity as exige no modelo), mas ficam vazias.
+- O serviço de tokens se chama `JwtTokenGenerator` (sem interface), e o `AuthService` fica na Infrastructure, porque depende do `UserManager`. A Application expõe apenas `IAuthService`.

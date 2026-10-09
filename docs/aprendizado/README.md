@@ -5,3 +5,4 @@ Registro do que foi construído em cada marco, **por que** foi feito assim e o q
 | Marco | Arquivo |
 |-------|---------|
 | M0 — Setup | [m0-setup.md](m0-setup.md) |
+| M1a — Autenticação (backend) | [m1a-autenticacao-backend.md](m1a-autenticacao-backend.md) |

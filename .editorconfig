@@ -25,3 +25,7 @@ dotnet_sort_system_directives_first = true
 
 [*.{sln,ps1,cmd,bat}]
 end_of_line = crlf
+
+# Código gerado pelo EF Core (migrations): os analisadores de estilo não se aplicam.
+[backend/**/Migrations/*.cs]
+generated_code = true
