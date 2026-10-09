@@ -1,21 +1,21 @@
 using System.Net;
 using System.Net.Http.Json;
 using FinanceControl.Api.Controllers;
-using Microsoft.AspNetCore.Mvc.Testing;
+using FinanceControl.IntegrationTests.Infrastructure;
 
 namespace FinanceControl.IntegrationTests;
 
 /// <summary>
-/// WebApplicationFactory sobe a API inteira em memória, sem abrir porta de rede.
-/// IClassFixture faz a mesma instância ser reaproveitada por todos os testes desta classe.
+/// ApiFactory sobe a API inteira em memória (sem abrir porta de rede), com um PostgreSQL real em container.
+/// [Collection] faz a mesma instância ser reaproveitada por todas as classes de teste da coleção.
 /// </summary>
-public sealed class PingEndpointTests(WebApplicationFactory<Program> factory)
-    : IClassFixture<WebApplicationFactory<Program>>
+[Collection(ApiCollection.Name)]
+public sealed class PingEndpointTests(ApiFactory factory)
 {
-    private readonly HttpClient _client = factory.CreateClient();
+    private readonly HttpClient _client = factory.CreateApiClient();
 
     [Fact]
-    public async Task GetPing_ReturnsPong()
+    public async Task GetPing_ReturnsPong_WithoutAuthentication()
     {
         // Act
         var response = await _client.GetAsync("/api/ping");
@@ -28,13 +28,19 @@ public sealed class PingEndpointTests(WebApplicationFactory<Program> factory)
     }
 
     [Fact]
-    public async Task GetHealthLive_ReturnsHealthy_WithoutTouchingTheDatabase()
+    public async Task GetHealthLive_ReturnsHealthy()
     {
-        // Act
         var response = await _client.GetAsync("/health/live");
 
-        // Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         Assert.Contains("Healthy", await response.Content.ReadAsStringAsync());
+    }
+
+    [Fact]
+    public async Task GetHealthReady_WithDatabaseUp_ReturnsHealthy()
+    {
+        var response = await _client.GetAsync("/health/ready");
+
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
 }

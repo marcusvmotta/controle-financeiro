@@ -7,8 +7,9 @@
 | Camada | Componente | Responsabilidade |
 |--------|------------|------------------|
 | Infrastructure | `AppUser : IdentityUser<Guid>` | Usuário com `Name`, `IsDemo`, `CreatedAt` |
-| Infrastructure | `TokenService : ITokenService` | Gera JWT; gera, grava (hash), valida e rotaciona refresh tokens |
-| Application | `AuthService` | Cadastro (cria usuário + copia categorias padrão), login, refresh, logout |
+| Infrastructure | `JwtTokenGenerator` | Gera o JWT e o refresh token (aleatório) e calcula o hash do refresh token |
+| Application | `IAuthService`, DTOs, validators | Contrato dos casos de uso e regras de entrada |
+| Infrastructure | `AuthService : IAuthService` | Cadastro, login, refresh (rotação e detecção de reuso), logout. Fica na Infrastructure porque depende do `UserManager` do Identity |
 | Api | `AuthController`, `MeController` | Endpoints; escreve e apaga o cookie |
 | Api | `CurrentUser : ICurrentUser` | Lê `sub` do `HttpContext.User` |
 
@@ -21,7 +22,7 @@
 ```
 - `201` → mesmo corpo do login + cookie (o usuário já entra logado).
 - `400` validação · `409` e-mail já cadastrado.
-- Na mesma transação de banco: cria o usuário e copia as categorias padrão.
+- Na mesma transação de banco: cria o usuário e copia as categorias padrão. *(A cópia das categorias entra no M2, junto com o módulo de categorias.)*
 
 ### `POST /api/auth/login`
 ```json
@@ -47,6 +48,7 @@
 - Revoga o refresh token do cookie e apaga o cookie. `204` sempre (mesmo sem cookie válido).
 
 ### `POST /api/auth/demo`
+- *Implementado no M5, com o módulo do usuário demo.*
 - Só registrado quando `Demo:Enabled=true`. Faz login no usuário demo sem senha. Ver [06-usuario-demo.md](06-usuario-demo.md).
 
 ### `GET /api/me`

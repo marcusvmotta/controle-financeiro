@@ -7,7 +7,7 @@
 | Camada | Ferramentas | O que cobre | Quando roda |
 |--------|-------------|-------------|-------------|
 | **Unitários (backend)** | xUnit (`Assert`), NSubstitute | Regras de domínio, validators, services com dependências simuladas | Todo push (CI) |
-| **Integração (backend)** | `WebApplicationFactory`, **Testcontainers** (PostgreSQL real), Respawn | Endpoints HTTP de ponta a ponta com banco real: auth, isolamento, transferências, agregações do dashboard | Todo push (CI) |
+| **Integração (backend)** | `WebApplicationFactory`, **Testcontainers** (PostgreSQL real) | Endpoints HTTP de ponta a ponta com banco real: auth, isolamento, transferências, agregações do dashboard | Todo push (CI) |
 | **Unitários (frontend)** | Runner padrão do Angular CLI (Vitest nas versões recentes; confirmar no M0) + Angular Testing Library | Stores, interceptors, guards, pipes, formulários | Todo push (CI) |
 | **E2E** | Playwright | Fluxo principal: login demo → dashboard → lançar despesa → ver o gráfico mudar | *P2, depois do MVP* |
 
@@ -20,7 +20,7 @@
 
 - Nome do teste no padrão `Metodo_Cenario_ResultadoEsperado`, por exemplo `CreateTransfer_SameAccount_ThrowsBusinessRule`.
 - Estrutura **Arrange / Act / Assert** visível no corpo do teste.
-- Um container Postgres por execução da suíte de integração (fixture compartilhada); o **Respawn** limpa as tabelas entre os testes.
+- Um container Postgres por execução da suíte de integração (`ApiFactory` + `[Collection("Api")]`). Em vez de limpar o banco entre os testes, cada teste cria os próprios dados (ex.: e-mails únicos), o que dispensa o Respawn por enquanto. Os testes de integração já rodam desde o M1, e não só a partir da Fase 2.
 - `TimeProvider` fixo nos testes (`FakeTimeProvider`), para "mês atual" e "hoje" serem determinísticos.
 - Builders de dados de teste (`TransactionBuilder`, `AccountBuilder`) para não repetir setup.
 

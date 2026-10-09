@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FinanceControl.Api.Controllers;
@@ -7,6 +8,7 @@ namespace FinanceControl.Api.Controllers;
 /// </summary>
 [ApiController]
 [Route("api/ping")]
+[AllowAnonymous]
 public sealed class PingController(TimeProvider timeProvider) : ControllerBase
 {
     [HttpGet]
