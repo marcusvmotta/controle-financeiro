@@ -1,0 +1,27 @@
+<main class="status-page">
+  <h1>FinanceControl</h1>
+  <p class="subtitle">Status do sistema · M0</p>
+
+  <ul class="checks">
+    <li class="check" [class]="api().state">
+      <span class="dot" aria-hidden="true"></span>
+      <div>
+        <strong>API</strong>
+        <p>{{ api().detail }}</p>
+      </div>
+    </li>
+    <li class="check" [class]="database().state">
+      <span class="dot" aria-hidden="true"></span>
+      <div>
+        <strong>Banco de dados</strong>
+        <p>{{ database().detail }}</p>
+      </div>
+    </li>
+  </ul>
+
+  @if (serverTime(); as time) {
+    <p class="server-time">Horário do servidor: {{ time | date: 'dd/MM/yyyy HH:mm:ss' }}</p>
+  }
+
+  <button type="button" (click)="check()">Verificar novamente</button>
+</main>

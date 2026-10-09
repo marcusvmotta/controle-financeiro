@@ -1,0 +1,37 @@
+# Nginx serve o Angular e repassa as chamadas de API para o container da API (ADR-010).
+# Para o navegador, tudo vem da mesma origem: sem CORS, e o cookie do refresh token funciona.
+server {
+    listen 80;
+    server_name _;
+
+    root /usr/share/nginx/html;
+    index index.html;
+
+    gzip on;
+    gzip_types text/css application/javascript application/json image/svg+xml;
+
+    # ---- Proxy reverso para a API ----
+    location ~ ^/(api|health|swagger|openapi)(/|$) {
+        proxy_pass ${API_UPSTREAM};
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    # ---- Arquivos do Angular ----
+    # Arquivos com hash no nome (main-ABC123.js) nunca mudam: cache de 1 ano.
+    location ~* \.(?:js|css|woff2?|ico|svg|png|jpg)$ {
+        expires 1y;
+        add_header Cache-Control "public, immutable";
+        include /etc/nginx/snippets/security-headers.conf;
+        try_files $uri =404;
+    }
+
+    # Rotas da SPA (/dashboard, /transactions...) não existem como arquivo:
+    # devolve o index.html e o roteador do Angular resolve no navegador.
+    location / {
+        add_header Cache-Control "no-cache";
+        include /etc/nginx/snippets/security-headers.conf;
+        try_files $uri $uri/ /index.html;
+    }
+}

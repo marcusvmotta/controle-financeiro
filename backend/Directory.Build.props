@@ -1,0 +1,14 @@
+<Project>
+  <!-- Aplicado automaticamente a todos os projetos dentro de backend/ -->
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
+
+    <!-- Aviso de compilação vira erro: força o código a ficar limpo desde o início -->
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <!-- Aplica as regras do .editorconfig (estilo de código) durante o build -->
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+  </PropertyGroup>
+</Project>

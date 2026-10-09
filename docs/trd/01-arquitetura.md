@@ -16,7 +16,7 @@ flowchart TD
 | Projeto | Responsabilidade | Pode depender de |
 |---------|------------------|------------------|
 | **Domain** | Entidades, enums, regras de negócio puras (ex.: validar uma transferência). Nada de EF Core, ASP.NET ou bibliotecas externas. | nada |
-| **Application** | Services por feature, DTOs de entrada e saída, validators (FluentValidation), interfaces (`IAppDbContext`, `ICurrentUser`, `IClock`, `ITokenService`), exceções de negócio. | Domain, EF Core (abstrações) |
+| **Application** | Services por feature, DTOs de entrada e saída, validators (FluentValidation), interfaces (`IAppDbContext`, `ICurrentUser`, `ITokenService`), exceções de negócio. | Domain, EF Core (abstrações) |
 | **Infrastructure** | `AppDbContext`, configurações do EF (`IEntityTypeConfiguration`), migrations, Identity, emissão de tokens, Hangfire, seeds. | Application, Domain |
 | **Api** | `Program.cs`, controllers, middlewares, handler de exceções, configuração de Swagger, Serilog, autenticação e health checks. | Application, Infrastructure (só para registrar DI) |
 
@@ -24,7 +24,7 @@ flowchart TD
 
 ```
 backend/
-├── FinanceControl.sln
+├── FinanceControl.slnx          # solution no formato XML do .NET 10
 ├── Directory.Build.props        # TargetFramework, Nullable, TreatWarningsAsErrors
 ├── Directory.Packages.props     # versões centralizadas de pacotes NuGet
 ├── src/
@@ -32,7 +32,7 @@ backend/
 │   │   ├── Entities/            # Account, Category, Transaction, RefreshToken
 │   │   └── Enums/               # AccountType, CategoryType, TransactionType
 │   ├── FinanceControl.Application/
-│   │   ├── Abstractions/        # IAppDbContext, ICurrentUser, IClock, ITokenService
+│   │   ├── Abstractions/        # IAppDbContext, ICurrentUser, ITokenService
 │   │   ├── Common/              # PagedResult<T>, exceções (NotFoundException, ConflictException…)
 │   │   └── Features/
 │   │       ├── Auth/            # AuthService, DTOs, validators
@@ -107,6 +107,10 @@ builder.Services
     .AddInfrastructure(builder.Configuration)  // DbContext, Identity, tokens, Hangfire
     .AddApi();                                 // controllers, auth, Swagger, ProblemDetails
 ```
+
+## Relógio
+
+"Que horas são" vem do `TimeProvider` do próprio .NET (registrado como `TimeProvider.System`), nunca de `DateTime.Now`. Nos testes, ele é trocado por um relógio fixo. Ele substitui o `IClock` previsto na primeira versão do TRD: mesma função, sem código próprio.
 
 ## Configuração
 

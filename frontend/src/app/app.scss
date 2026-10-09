@@ -1,0 +1,57 @@
+.status-page {
+  max-width: 480px;
+  margin: 4rem auto;
+  padding: 0 1rem;
+  font-family: system-ui, sans-serif;
+}
+
+h1 {
+  margin-bottom: 0;
+}
+
+.subtitle {
+  margin-top: 0.25rem;
+  color: #666;
+}
+
+.checks {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.check {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+
+  p {
+    margin: 0.125rem 0 0;
+    color: #555;
+  }
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #bbb;
+  flex-shrink: 0;
+}
+
+.check.ok .dot {
+  background: #2e7d32;
+}
+
+.check.error .dot {
+  background: #c62828;
+}
+
+.server-time {
+  color: #666;
+  font-size: 0.875rem;
+}

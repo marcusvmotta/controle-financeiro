@@ -28,3 +28,7 @@
 
 - ✅ Sem erros de centavos e sem transações mudando de dia por fuso horário.
 - ⚠️ Números JSON viram `number` (ponto flutuante) no JavaScript. Seguro aqui porque o frontend não faz contas, só formata. Se um dia fizer, usar strings no JSON.
+
+## Nota de implementação (M0)
+
+O serviço `IClock` citado acima foi implementado com o `TimeProvider` nativo do .NET. A decisão não muda; só o nome do mecanismo.
