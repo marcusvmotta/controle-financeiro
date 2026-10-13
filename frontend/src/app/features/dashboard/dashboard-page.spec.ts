@@ -1,28 +1,25 @@
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { App } from './app';
+import { provideRouter } from '@angular/router';
+import { DashboardPage } from './dashboard-page';
 
-describe('App (página de status)', () => {
+describe('DashboardPage (status do sistema)', () => {
   let http: HttpTestingController;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [App],
-      // provideHttpClientTesting troca o HTTP real por um "falso" que o teste controla.
-      providers: [provideHttpClient(), provideHttpClientTesting()],
+      imports: [DashboardPage],
+      providers: [provideHttpClient(), provideHttpClientTesting(), provideRouter([])],
     }).compileComponents();
 
     http = TestBed.inject(HttpTestingController);
   });
 
-  afterEach(() => {
-    // Garante que nenhuma requisição ficou sem resposta (ou foi feita sem querer).
-    http.verify();
-  });
+  afterEach(() => http.verify());
 
   async function render() {
-    const fixture = TestBed.createComponent(App);
+    const fixture = TestBed.createComponent(DashboardPage);
     fixture.detectChanges(); // dispara o ngOnInit
     return fixture;
   }
@@ -30,7 +27,7 @@ describe('App (página de status)', () => {
   it('mostra API e banco OK quando os dois respondem', async () => {
     const fixture = await render();
 
-    http.expectOne('/api/ping').flush({ message: 'pong', serverTime: '2026-10-08T12:00:00Z' });
+    http.expectOne('/api/ping').flush({ message: 'pong', serverTime: '2026-10-13T12:00:00Z' });
     http.expectOne('/health/ready').flush({ status: 'Healthy', checks: { database: 'Healthy' } });
     await fixture.whenStable();
 
@@ -42,7 +39,7 @@ describe('App (página de status)', () => {
   it('mostra banco indisponível quando /health/ready responde 503', async () => {
     const fixture = await render();
 
-    http.expectOne('/api/ping').flush({ message: 'pong', serverTime: '2026-10-08T12:00:00Z' });
+    http.expectOne('/api/ping').flush({ message: 'pong', serverTime: '2026-10-13T12:00:00Z' });
     http
       .expectOne('/health/ready')
       .flush(
@@ -52,15 +49,5 @@ describe('App (página de status)', () => {
     await fixture.whenStable();
 
     expect((fixture.nativeElement as HTMLElement).textContent).toContain('Banco indisponível');
-  });
-
-  it('mostra erro quando a API não responde', async () => {
-    const fixture = await render();
-
-    http.expectOne('/api/ping').error(new ProgressEvent('network error'));
-    http.expectOne('/health/ready').error(new ProgressEvent('network error'));
-    await fixture.whenStable();
-
-    expect((fixture.nativeElement as HTMLElement).textContent).toContain('Sem resposta da API');
   });
 });

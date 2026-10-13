@@ -10,7 +10,7 @@ Sistema web de controle financeiro pessoal: registre receitas e despesas em vár
 
 | Camada | Tecnologia |
 |--------|------------|
-| Frontend | Angular 22 (standalone, signals) |
+| Frontend | Angular 22 (standalone, signals), Angular Material |
 | Backend | ASP.NET Core (.NET 10), EF Core |
 | Banco | PostgreSQL |
 | Infra | Docker, Nginx, GitHub Actions |
