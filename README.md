@@ -4,7 +4,7 @@
 
 Sistema web de controle financeiro pessoal: registre receitas e despesas em várias contas, organize por categorias e descubra **para onde o seu dinheiro está indo**.
 
-> 🚧 Em construção. Marco atual: **M0 (setup)**. Veja o [roadmap](docs/prd/02-escopo-e-roadmap.md).
+> 🚧 Em construção. Marco atual: **M1 (autenticação)**. Veja o [roadmap](docs/prd/02-escopo-e-roadmap.md).
 
 ## Stack
 
@@ -44,7 +44,7 @@ cd frontend && npm install && npm start
 ### Testes
 
 ```bash
-cd backend && dotnet test
+cd backend && dotnet test          # requer Docker rodando (testes de integração usam Testcontainers)
 cd frontend && npx ng test --watch=false
 ```
 

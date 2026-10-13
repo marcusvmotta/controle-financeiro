@@ -35,14 +35,14 @@ backend/
 │   │   ├── Abstractions/        # IAppDbContext, ICurrentUser, ITokenService
 │   │   ├── Common/              # PagedResult<T>, exceções (NotFoundException, ConflictException…)
 │   │   └── Features/
-│   │       ├── Auth/            # AuthService, DTOs, validators
+│   │       ├── Auth/            # IAuthService, DTOs, validators (implementação na Infrastructure)
 │   │       ├── Accounts/
 │   │       ├── Categories/
 │   │       ├── Transactions/
 │   │       └── Dashboard/
 │   ├── FinanceControl.Infrastructure/
 │   │   ├── Persistence/         # AppDbContext, Configurations/, Migrations/, Seeds/
-│   │   ├── Identity/            # AppUser, TokenService
+│   │   ├── Identity/            # AppUser, AuthService, JwtTokenGenerator
 │   │   └── Jobs/                # jobs do Hangfire
 │   └── FinanceControl.Api/
 │       ├── Controllers/
