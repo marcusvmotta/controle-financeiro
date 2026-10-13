@@ -1,17 +1,15 @@
-.status-page {
-  max-width: 480px;
-  margin: 4rem auto;
-  padding: 0 1rem;
-  font-family: system-ui, sans-serif;
-}
-
 h1 {
-  margin-bottom: 0;
+  font: var(--mat-sys-headline-medium);
+  margin-bottom: 0.25rem;
 }
 
 .subtitle {
-  margin-top: 0.25rem;
-  color: #666;
+  margin-top: 0;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.status-card {
+  max-width: 480px;
 }
 
 .checks {
@@ -25,13 +23,10 @@ h1 {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  padding: 0.75rem 1rem;
-  border: 1px solid #ddd;
-  border-radius: 8px;
 
   p {
     margin: 0.125rem 0 0;
-    color: #555;
+    color: var(--mat-sys-on-surface-variant);
   }
 }
 
@@ -39,7 +34,7 @@ h1 {
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  background: #bbb;
+  background: var(--mat-sys-outline);
   flex-shrink: 0;
 }
 
@@ -48,10 +43,10 @@ h1 {
 }
 
 .check.error .dot {
-  background: #c62828;
+  background: var(--mat-sys-error);
 }
 
 .server-time {
-  color: #666;
-  font-size: 0.875rem;
+  color: var(--mat-sys-on-surface-variant);
+  font: var(--mat-sys-body-small);
 }
