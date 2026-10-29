@@ -1,3 +1,9 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
 .toolbar {
   position: sticky;
   top: 0;
@@ -22,6 +28,15 @@
   padding: 0.5rem 1rem;
   color: var(--mat-sys-on-surface-variant);
   font: var(--mat-sys-body-small);
+}
+
+.container {
+  flex: 1;
+}
+
+.sidenav {
+  width: 220px;
+  border-right: 1px solid var(--mat-sys-outline-variant);
 }
 
 .content {

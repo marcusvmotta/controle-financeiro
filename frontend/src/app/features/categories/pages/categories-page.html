@@ -1,0 +1,83 @@
+<header class="page-header">
+  <h1>Categorias</h1>
+  <button matButton="filled" type="button" (click)="openCreate()">
+    <mat-icon>add</mat-icon>
+    Nova categoria
+  </button>
+</header>
+
+<mat-slide-toggle [checked]="store.showArchived()" (change)="store.toggleArchived($event.checked)">
+  Mostrar arquivadas
+</mat-slide-toggle>
+
+@switch (store.status()) {
+  @case ('loading') {
+    <div class="center"><mat-spinner diameter="40" /></div>
+  }
+  @case ('error') {
+    <div class="center">
+      <p class="form-error" role="alert">{{ store.error() }}</p>
+      <button matButton type="button" (click)="store.load()">Tentar de novo</button>
+    </div>
+  }
+  @default {
+    <mat-tab-group [selectedIndex]="selectedTab()" (selectedIndexChange)="selectedTab.set($event)">
+      <mat-tab [label]="'Despesas (' + store.expenses().length + ')'">
+        <ng-container *ngTemplateOutlet="list; context: { $implicit: store.expenses() }" />
+      </mat-tab>
+      <mat-tab [label]="'Receitas (' + store.incomes().length + ')'">
+        <ng-container *ngTemplateOutlet="list; context: { $implicit: store.incomes() }" />
+      </mat-tab>
+    </mat-tab-group>
+  }
+}
+
+<!-- Template reutilizado pelas duas abas. -->
+<ng-template #list let-categories>
+  @if (categories.length === 0) {
+    <app-empty-state icon="category" title="Nenhuma categoria aqui" message="Crie uma categoria para classificar seus lançamentos." />
+  } @else {
+    <mat-list>
+      @for (category of categories; track category.id) {
+        <mat-list-item [class.archived]="category.isArchived">
+          <span matListItemIcon class="avatar" [style.background]="category.color">
+            <mat-icon>{{ category.icon }}</mat-icon>
+          </span>
+          <span matListItemTitle>{{ category.name }}</span>
+          <span matListItemLine>
+            {{ category.transactionCount }} {{ category.transactionCount === 1 ? 'lançamento' : 'lançamentos' }}
+            @if (category.isArchived) {
+              · Arquivada
+            }
+          </span>
+          <button
+            matListItemMeta
+            mat-icon-button
+            type="button"
+            [matMenuTriggerFor]="menu"
+            [attr.aria-label]="'Ações da categoria ' + category.name"
+          >
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu" xPosition="before">
+            <button mat-menu-item type="button" (click)="openEdit(category)">
+              <mat-icon>edit</mat-icon><span>Editar</span>
+            </button>
+            @if (category.isArchived) {
+              <button mat-menu-item type="button" (click)="setArchived(category, false)">
+                <mat-icon>unarchive</mat-icon><span>Reativar</span>
+              </button>
+            } @else {
+              <button mat-menu-item type="button" (click)="setArchived(category, true)">
+                <mat-icon>archive</mat-icon><span>Arquivar</span>
+              </button>
+            }
+            <button mat-menu-item type="button" (click)="confirmDelete(category)">
+              <mat-icon>delete</mat-icon><span>Excluir</span>
+            </button>
+          </mat-menu>
+        </mat-list-item>
+      }
+    </mat-list>
+  }
+</ng-template>

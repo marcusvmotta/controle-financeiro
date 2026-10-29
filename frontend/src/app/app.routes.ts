@@ -28,6 +28,18 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./features/dashboard/dashboard-page').then((m) => m.DashboardPage),
       },
+      {
+        path: 'accounts',
+        title: 'Contas · FinanceControl',
+        loadComponent: () =>
+          import('./features/accounts/pages/accounts-page').then((m) => m.AccountsPage),
+      },
+      {
+        path: 'categories',
+        title: 'Categorias · FinanceControl',
+        loadComponent: () =>
+          import('./features/categories/pages/categories-page').then((m) => m.CategoriesPage),
+      },
     ],
   },
   {

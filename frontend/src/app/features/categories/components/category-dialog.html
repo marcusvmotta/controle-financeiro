@@ -1,0 +1,46 @@
+<h2 mat-dialog-title>{{ isEdit ? 'Editar categoria' : 'Nova categoria' }}</h2>
+
+<form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+  <mat-dialog-content>
+    @if (errorMessage(); as message) {
+      <p class="form-error" role="alert">{{ message }}</p>
+    }
+
+    @if (isEdit) {
+      <p class="hint">Tipo: {{ typeLabels[form.controls.type.value] }} (não pode ser alterado).</p>
+    } @else {
+      <mat-button-toggle-group formControlName="type" aria-label="Tipo da categoria">
+        <mat-button-toggle value="Expense">Despesa</mat-button-toggle>
+        <mat-button-toggle value="Income">Receita</mat-button-toggle>
+      </mat-button-toggle-group>
+    }
+
+    <mat-form-field class="name-field">
+      <mat-label>Nome</mat-label>
+      <input matInput formControlName="name" maxlength="40" cdkFocusInitial />
+      @if (form.controls.name.hasError('required')) {
+        <mat-error>Informe o nome.</mat-error>
+      } @else if (form.controls.name.hasError('server')) {
+        <mat-error>{{ form.controls.name.getError('server') }}</mat-error>
+      }
+    </mat-form-field>
+
+    <span class="picker-label">Cor</span>
+    <app-color-picker [value]="form.controls.color.value" (selected)="form.controls.color.setValue($event)" />
+
+    <span class="picker-label">Ícone</span>
+    <app-icon-picker
+      [icons]="icons"
+      [value]="form.controls.icon.value"
+      [color]="form.controls.color.value"
+      (selected)="form.controls.icon.setValue($event)"
+    />
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button matButton type="button" mat-dialog-close [disabled]="saving()">Cancelar</button>
+    <button matButton="filled" type="submit" [disabled]="saving()">
+      {{ saving() ? 'Salvando...' : 'Salvar' }}
+    </button>
+  </mat-dialog-actions>
+</form>

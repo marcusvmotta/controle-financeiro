@@ -48,8 +48,8 @@ cd frontend && npx ng lint && npx ng test --watch=false && npx ng build
 
 ## Status atual
 
-- Concluídos: PRD, TRD, **M0 (setup)**, **M1 (autenticação)** e **M2a (contas e categorias no backend)**.
-- Próximo: **M2b (contas e categorias no frontend)**: menu lateral no `Shell`, páginas `/accounts` (cards com saldo, total, mostrar arquivadas, diálogo de criar/editar, excluir → oferecer arquivar no 409) e `/categories` (abas Despesas/Receitas, diálogo com seletor de cor e ícone). Ver [docs/trd/05-frontend.md](docs/trd/05-frontend.md), [docs/trd/modulos/02-contas.md](docs/trd/modulos/02-contas.md) e [docs/trd/modulos/03-categorias.md](docs/trd/modulos/03-categorias.md).
+- Concluídos: PRD, TRD, **M0 (setup)**, **M1 (autenticação)** e **M2 (contas e categorias)**: backend (M2a) e frontend (M2b).
+- Próximo: **M3 (transações)**: entidade `Transaction` (`IUserOwned`), receitas/despesas/transferências (dois registros com `TransferIn`/`TransferOut`, ADR-007), listagem paginada com filtros, saldo real das contas (ADR-006), `transactionCount` e bloqueio de exclusão (409) de conta/categoria com transações, testes obrigatórios 2, 5, 6 e 8, e a tela `/transactions`. Ver [docs/trd/modulos/04-transacoes.md](docs/trd/modulos/04-transacoes.md).
 - Isolamento entre usuários: toda entidade nova com dono deve implementar `IUserOwned` (query filter automático) e ganhar casos em `UserIsolationTests`.
 - Adiados: saldo com transações e bloqueio de exclusão de conta/categoria com transações (M3); `POST /api/auth/demo` e o botão "Entrar como demo" (M5); Content-Security-Policy no Nginx (M5).
 - Testes de integração usam Testcontainers: **o Docker precisa estar rodando** para `dotnet test`.

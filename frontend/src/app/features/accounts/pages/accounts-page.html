@@ -1,0 +1,94 @@
+<header class="page-header">
+  <div>
+    <h1>Contas</h1>
+    @if (store.status() === 'loaded' && !store.isEmpty()) {
+      <p class="total">
+        Saldo total
+        <strong [class.negative]="store.totalBalance() < 0">
+          {{ store.totalBalance() | currency: 'BRL' }}
+        </strong>
+      </p>
+    }
+  </div>
+  <button matButton="filled" type="button" (click)="openCreate()">
+    <mat-icon>add</mat-icon>
+    Nova conta
+  </button>
+</header>
+
+<mat-slide-toggle [checked]="store.showArchived()" (change)="store.toggleArchived($event.checked)">
+  Mostrar arquivadas
+</mat-slide-toggle>
+
+@switch (store.status()) {
+  @case ('loading') {
+    <div class="center"><mat-spinner diameter="40" /></div>
+  }
+  @case ('error') {
+    <div class="center">
+      <p class="form-error" role="alert">{{ store.error() }}</p>
+      <button matButton type="button" (click)="store.load()">Tentar de novo</button>
+    </div>
+  }
+  @default {
+    @if (store.isEmpty()) {
+      <app-empty-state
+        icon="account_balance"
+        title="Nenhuma conta ainda"
+        message="Cadastre onde seu dinheiro está: conta corrente, poupança, carteira..."
+      >
+        <button matButton="filled" type="button" (click)="openCreate()">Cadastrar primeira conta</button>
+      </app-empty-state>
+    } @else {
+      <div class="grid">
+        @for (account of store.accounts(); track account.id) {
+          <mat-card appearance="outlined" class="account" [class.archived]="account.isArchived">
+            <mat-card-header>
+              <div mat-card-avatar class="avatar" [style.background]="account.color">
+                <mat-icon>{{ account.icon }}</mat-icon>
+              </div>
+              <mat-card-title>{{ account.name }}</mat-card-title>
+              <mat-card-subtitle>{{ typeLabels[account.type] }}</mat-card-subtitle>
+              <button
+                mat-icon-button
+                class="menu"
+                type="button"
+                [matMenuTriggerFor]="menu"
+                [attr.aria-label]="'Ações da conta ' + account.name"
+              >
+                <mat-icon>more_vert</mat-icon>
+              </button>
+            </mat-card-header>
+
+            <mat-card-content>
+              <p class="balance" [class.negative]="account.currentBalance < 0">
+                {{ account.currentBalance | currency: 'BRL' }}
+              </p>
+              @if (account.isArchived) {
+                <mat-chip-set><mat-chip disabled>Arquivada</mat-chip></mat-chip-set>
+              }
+            </mat-card-content>
+
+            <mat-menu #menu="matMenu" xPosition="before">
+              <button mat-menu-item type="button" (click)="openEdit(account)">
+                <mat-icon>edit</mat-icon><span>Editar</span>
+              </button>
+              @if (account.isArchived) {
+                <button mat-menu-item type="button" (click)="setArchived(account, false)">
+                  <mat-icon>unarchive</mat-icon><span>Reativar</span>
+                </button>
+              } @else {
+                <button mat-menu-item type="button" (click)="setArchived(account, true)">
+                  <mat-icon>archive</mat-icon><span>Arquivar</span>
+                </button>
+              }
+              <button mat-menu-item type="button" (click)="confirmDelete(account)">
+                <mat-icon>delete</mat-icon><span>Excluir</span>
+              </button>
+            </mat-menu>
+          </mat-card>
+        }
+      </div>
+    }
+  }
+}

@@ -1,0 +1,23 @@
+mat-tab-group {
+  margin-top: 1rem;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: grid !important;
+  place-items: center;
+  color: white;
+}
+
+.archived {
+  opacity: 0.6;
+}
+
+.center {
+  display: grid;
+  justify-items: center;
+  gap: 1rem;
+  padding: 3rem 0;
+}

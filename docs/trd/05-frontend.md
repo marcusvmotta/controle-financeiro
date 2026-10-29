@@ -118,3 +118,14 @@ flowchart TD
 - **Refresh único:** `AuthService.refreshAccessToken()` guarda o refresh em andamento num `Observable` com `shareReplay`; chamadas simultâneas recebem o mesmo resultado (teste obrigatório 10).
 - **`returnUrl`:** só caminhos internos (`/algo`, nunca `//site`) são aceitos, para evitar *open redirect*.
 - **Botão "Entrar como demo":** fica para o M5, junto com `POST /api/auth/demo`.
+
+## Notas de implementação (M2b)
+
+- **Store por página:** `AccountsStore` e `CategoriesStore` são `@Injectable()` sem `providedIn` e ficam em `providers` da página. Cada visita começa com estado limpo.
+- **Depois de salvar, recarregar:** create/update/delete/archive chamam `load()` de novo, porque totais e contagens vêm calculados do servidor.
+- **Diálogos que salvam:** recebem uma função `save(request)` em `MAT_DIALOG_DATA`; só fecham em caso de sucesso e mostram erros da API (400/409) dentro do formulário.
+- **Compartilhados:** `shared/appearance` (paleta, listas de ícones, `ColorPicker`, `IconPicker`), `shared/money` (`parseMoney`, `formatMoneyForInput`, `moneyValidator`), `shared/components` (`ConfirmDialog`, `EmptyState`).
+- **Listas de ícones** no frontend são subconjuntos da lista permitida do backend (`AppearanceRules.AllowedIcons`); ícone fora dela gera 400.
+- **Menu lateral:** `mat-sidenav` com `BreakpointObserver` (`side` ≥ 960 px, `over` abaixo).
+- **Lista de categorias:** `mat-list` com abas (o TRD não exigia tabela); a listagem de transações (M3) usará `mat-table`.
+- Bundle inicial: ~615 KB brutos (~143 KB com gzip), abaixo do aviso de 650 KB.

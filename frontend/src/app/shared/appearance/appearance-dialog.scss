@@ -1,0 +1,21 @@
+// Estilos compartilhados pelos diálogos de conta e de categoria.
+
+mat-dialog-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  // O mat-dialog-content tem padding-top 0 por padrão; os campos "outline" precisam de espaço para o rótulo.
+  padding-top: 0.5rem !important;
+}
+
+.picker-label {
+  margin: 0.75rem 0 0.5rem;
+  font: var(--mat-sys-label-large);
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.hint {
+  margin: 0;
+  font: var(--mat-sys-body-small);
+  color: var(--mat-sys-on-surface-variant);
+}

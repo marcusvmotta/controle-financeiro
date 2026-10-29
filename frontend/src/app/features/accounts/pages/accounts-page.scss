@@ -1,0 +1,47 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.account.archived {
+  opacity: 0.65;
+}
+
+.avatar {
+  display: grid;
+  place-items: center;
+  color: white;
+}
+
+.menu {
+  margin-left: auto;
+}
+
+.balance {
+  margin: 0.5rem 0 0;
+  font: var(--mat-sys-headline-small);
+}
+
+.total {
+  margin: 0.25rem 0 0;
+  color: var(--mat-sys-on-surface-variant);
+
+  strong {
+    margin-left: 0.25rem;
+    color: var(--mat-sys-on-surface);
+    font: var(--mat-sys-title-large);
+  }
+}
+
+.negative {
+  color: var(--mat-sys-error) !important;
+}
+
+.center {
+  display: grid;
+  justify-items: center;
+  gap: 1rem;
+  padding: 3rem 0;
+}
