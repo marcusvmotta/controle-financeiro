@@ -3,6 +3,8 @@ using FinanceControl.Application.Common.Exceptions;
 using FluentValidation;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Npgsql;
 
 namespace FinanceControl.Api.Infrastructure;
 
@@ -24,6 +26,10 @@ public sealed class GlobalExceptionHandler(
             BusinessRuleException e => Problem(StatusCodes.Status422UnprocessableEntity, "Regra de negócio violada", e.Message),
             UnauthorizedException e => Problem(StatusCodes.Status401Unauthorized, "Não autenticado", e.Message),
             ForbiddenException e => Problem(StatusCodes.Status403Forbidden, "Acesso negado", e.Message),
+            // Rede de segurança: duas requisições simultâneas passaram pela checagem do service,
+            // mas o índice único do banco barrou a segunda (código 23505 do PostgreSQL).
+            DbUpdateException { InnerException: PostgresException { SqlState: PostgresErrorCodes.UniqueViolation } } =>
+                Problem(StatusCodes.Status409Conflict, "Conflito", "Já existe um registro com esses dados."),
             _ => null,
         };
 

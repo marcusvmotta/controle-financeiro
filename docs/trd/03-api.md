@@ -97,3 +97,8 @@ Erros de validação (`400`) incluem o campo `errors`, com as mensagens por camp
 | [Transações](modulos/04-transacoes.md) | `GET/POST /api/transactions` · `GET/PUT/DELETE /api/transactions/{id}` · `POST /api/transactions/transfer` · `PUT /api/transactions/transfer/{pairId}` |
 | [Dashboard](modulos/05-dashboard.md) | `GET /api/dashboard/summary` · `GET /api/dashboard/expenses-by-category` · `GET /api/dashboard/monthly-evolution` |
 | Infra | `GET /health/live` · `GET /health/ready` |
+
+## Nota de implementação (M2)
+
+- JSON que não pode ser convertido (ex.: `"type": "Bitcoin"` num enum, texto num campo numérico) também responde `400` em português, com o nome do campo em camelCase e **sem** expor nomes de classes internas (`InvalidRequestResponseFactory`).
+- Violação de índice único no banco (`23505`, quando duas requisições simultâneas passam pela checagem do service) vira `409`.

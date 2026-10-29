@@ -1,3 +1,4 @@
+using FinanceControl.Application.Abstractions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 
@@ -17,6 +18,13 @@ internal sealed class AppDbContextFactory : IDesignTimeDbContextFactory<AppDbCon
             .UseSnakeCaseNamingConvention()
             .Options;
 
-        return new AppDbContext(options);
+        return new AppDbContext(options, new NoCurrentUser(), TimeProvider.System);
+    }
+
+    /// <summary>Em tempo de design não existe usuário logado.</summary>
+    private sealed class NoCurrentUser : ICurrentUser
+    {
+        public Guid UserId => Guid.Empty;
+        public bool IsAuthenticated => false;
     }
 }

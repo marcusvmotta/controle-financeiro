@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using FinanceControl.Api.Infrastructure;
 using FinanceControl.Application;
 using FinanceControl.Application.Abstractions;
@@ -24,7 +25,11 @@ builder.Services.AddControllers(options =>
     // Sem isto, o ASP.NET valida sozinho campos string não-nulos, com mensagens em inglês.
     // Desligamos para que toda a validação fique no FluentValidation, em português.
     options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true;
-});
+})
+// Enums trafegam como texto no JSON ("Checking"), não como número (TRD 03-api).
+.AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()))
+// JSON que nem consegue ser convertido (ex.: tipo "Bitcoin") também responde em português, sem expor classes internas.
+.ConfigureApiBehaviorOptions(options => options.InvalidModelStateResponseFactory = InvalidRequestResponseFactory.Create);
 builder.Services.AddOpenApi(options => options.AddDocumentTransformer<BearerSecuritySchemeTransformer>());
 
 // Erros no formato ProblemDetails, sempre com o traceId para cruzar com os logs (TRD 03-api).
