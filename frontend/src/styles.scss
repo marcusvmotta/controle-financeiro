@@ -73,3 +73,18 @@ body {
   background: var(--mat-sys-error-container);
   color: var(--mat-sys-on-error-container);
 }
+
+// Cabeçalho das páginas internas: título à esquerda, ação principal à direita.
+.page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+
+  h1 {
+    margin: 0;
+    font: var(--mat-sys-headline-medium);
+  }
+}

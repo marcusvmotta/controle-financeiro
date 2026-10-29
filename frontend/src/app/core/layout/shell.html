@@ -1,4 +1,10 @@
 <mat-toolbar class="toolbar">
+  @if (isMobile()) {
+    <button mat-icon-button type="button" (click)="sidenav.toggle()" aria-label="Abrir menu">
+      <mat-icon>menu</mat-icon>
+    </button>
+  }
+
   <a class="brand" routerLink="/dashboard">
     <mat-icon>account_balance_wallet</mat-icon>
     <span>FinanceControl</span>
@@ -21,6 +27,33 @@
   }
 </mat-toolbar>
 
-<main class="content">
-  <router-outlet />
-</main>
+<mat-sidenav-container class="container">
+  <mat-sidenav
+    #sidenav
+    [mode]="isMobile() ? 'over' : 'side'"
+    [opened]="!isMobile()"
+    class="sidenav"
+  >
+    <mat-nav-list aria-label="Navegação principal">
+      @for (item of navItems; track item.path) {
+        <a
+          mat-list-item
+          [routerLink]="item.path"
+          routerLinkActive
+          #link="routerLinkActive"
+          [activated]="link.isActive"
+          (click)="closeIfMobile(sidenav)"
+        >
+          <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
+          <span matListItemTitle>{{ item.label }}</span>
+        </a>
+      }
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <main class="content">
+      <router-outlet />
+    </main>
+  </mat-sidenav-content>
+</mat-sidenav-container>
