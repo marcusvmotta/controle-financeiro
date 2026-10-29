@@ -8,7 +8,7 @@
 |--------|-------------|-------------|-------------|
 | **Unitários (backend)** | xUnit (`Assert`), NSubstitute | Regras de domínio, validators, services com dependências simuladas | Todo push (CI) |
 | **Integração (backend)** | `WebApplicationFactory`, **Testcontainers** (PostgreSQL real) | Endpoints HTTP de ponta a ponta com banco real: auth, isolamento, transferências, agregações do dashboard | Todo push (CI) |
-| **Unitários (frontend)** | Runner padrão do Angular CLI (Vitest nas versões recentes; confirmar no M0) + Angular Testing Library | Stores, interceptors, guards, pipes, formulários | Todo push (CI) |
+| **Unitários (frontend)** | Vitest + jsdom (padrão do Angular CLI 22), `TestBed`, `HttpTestingController` | Stores, interceptors, guards, pipes, formulários | Todo push (CI) |
 | **E2E** | Playwright | Fluxo principal: login demo → dashboard → lançar despesa → ver o gráfico mudar | *P2, depois do MVP* |
 
 > Testes de integração com **Postgres real** (e não SQLite ou banco em memória) pegam erros de SQL, constraints e tipos (`numeric`, `date`) que um banco falso esconde.

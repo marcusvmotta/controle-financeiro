@@ -1,0 +1,26 @@
+<mat-toolbar class="toolbar">
+  <a class="brand" routerLink="/dashboard">
+    <mat-icon>account_balance_wallet</mat-icon>
+    <span>FinanceControl</span>
+  </a>
+
+  <span class="spacer"></span>
+
+  @if (auth.user(); as user) {
+    <button matButton [matMenuTriggerFor]="userMenu" aria-label="Menu do usuário">
+      <mat-icon>account_circle</mat-icon>
+      <span class="user-name">{{ user.name }}</span>
+    </button>
+    <mat-menu #userMenu="matMenu" xPosition="before">
+      <div class="menu-email" aria-hidden="true">{{ user.email }}</div>
+      <button mat-menu-item type="button" (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        <span>Sair</span>
+      </button>
+    </mat-menu>
+  }
+</mat-toolbar>
+
+<main class="content">
+  <router-outlet />
+</main>

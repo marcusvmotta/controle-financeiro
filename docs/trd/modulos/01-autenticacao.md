@@ -64,7 +64,7 @@
 
 ## Frontend
 
-- `AuthService`: signals `user` e `accessToken`; métodos `login`, `register`, `logout`, `tryRefresh`, `loginAsDemo`.
+- `AuthService`: signals `user`, `accessToken` e `isAuthenticated`; métodos `login`, `register`, `logout`, `tryRestoreSession`, `refreshAccessToken` (compartilhado entre chamadas simultâneas) e `handleSessionExpired`. `loginAsDemo` entra no M5.
 - `authInterceptor`, `authGuard`, `guestGuard` (ver [05-frontend.md](../05-frontend.md#autenticação-no-frontend)).
 - Páginas `/login` (com botão "Entrar como demo" quando habilitado) e `/register`.
 - O frontend sabe se o modo demo está ativo por `GET /api/auth/config` → `{ demoEnabled: boolean }`.

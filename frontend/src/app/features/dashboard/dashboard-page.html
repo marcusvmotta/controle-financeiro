@@ -1,0 +1,40 @@
+<h1>Olá, {{ user()?.name }}!</h1>
+<p class="subtitle">
+  Seu painel financeiro chega nos próximos marcos. Por enquanto, este é o status do sistema.
+</p>
+
+<mat-card appearance="outlined" class="status-card">
+  <mat-card-header>
+    <mat-card-title>Status do sistema</mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content>
+    <ul class="checks">
+      <li class="check" [class]="api().state">
+        <span class="dot" aria-hidden="true"></span>
+        <div>
+          <strong>API</strong>
+          <p>{{ api().detail }}</p>
+        </div>
+      </li>
+      <li class="check" [class]="database().state">
+        <span class="dot" aria-hidden="true"></span>
+        <div>
+          <strong>Banco de dados</strong>
+          <p>{{ database().detail }}</p>
+        </div>
+      </li>
+    </ul>
+
+    @if (serverTime(); as time) {
+      <p class="server-time">Horário do servidor: {{ time | date: 'dd/MM/yyyy HH:mm:ss' }}</p>
+    }
+  </mat-card-content>
+
+  <mat-card-actions>
+    <button matButton type="button" (click)="check()">
+      <mat-icon>refresh</mat-icon>
+      Verificar novamente
+    </button>
+  </mat-card-actions>
+</mat-card>

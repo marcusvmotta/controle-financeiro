@@ -16,7 +16,7 @@ frontend/src/app/
 ├── app.config.ts            # providers: router, http + interceptors, locale pt-BR, Material
 ├── app.routes.ts            # rotas raiz com lazy loading por feature
 ├── core/
-│   ├── auth/                # AuthService, authGuard, guestGuard, auth.interceptor
+│   ├── auth/                # AuthApi, AuthService, authGuard, guestGuard, authInterceptor
 │   ├── http/                # error.interceptor, ApiError (tipo do ProblemDetails)
 │   └── layout/              # shell: toolbar, menu lateral, container das páginas
 ├── shared/
@@ -73,7 +73,7 @@ flowchart TD
     R -->|401| L[Mostra /login]
 ```
 
-- **Inicialização:** `provideAppInitializer` chama `AuthService.tryRefresh()` antes da primeira rota ser resolvida.
+- **Inicialização:** `provideAppInitializer` chama `AuthService.tryRestoreSession()` antes da primeira rota ser resolvida.
 - **`authInterceptor`:**
   1. adiciona `Authorization: Bearer <token>` nas chamadas para `/api` (exceto `/api/auth/*`);
   2. ao receber `401`, chama `/api/auth/refresh` **uma única vez** (requisições simultâneas esperam o mesmo refresh) e repete a requisição original;
@@ -108,3 +108,13 @@ flowchart TD
 ## Desenvolvimento local
 
 `ng serve` com `proxy.conf.json` apontando `/api`, `/health` e `/hangfire` para `http://localhost:5000`, reproduzindo a mesma origem do Nginx ([ADR-010](adr/010-mesmo-dominio-via-proxy.md)).
+
+## Notas de implementação (M1b)
+
+- **Nomes de arquivo:** seguimos o guia de estilo atual do Angular (sem sufixo `.component`): `login-page.ts`, `shell.ts`, `dashboard-page.ts`. As páginas de autenticação ficam em `features/auth/pages/`.
+- **Fontes locais:** o `ng add @angular/material` adiciona Roboto e Material Symbols pelo Google Fonts. Trocamos por pacotes npm (`@fontsource/roboto`, `material-symbols`) incluídos em `angular.json → styles`, para manter a CSP restrita (`font-src 'self'`) e não depender de serviço externo.
+- **Layout `Shell` com lazy loading:** só é baixado depois do login. O bundle inicial ficou em ~570 KB brutos (~130 KB com gzip); o orçamento de aviso foi ajustado de 500 KB para 650 KB.
+- **Ordem dos interceptors:** `[errorInterceptor, authInterceptor]`. O de erro fica por fora para só ver o erro final, depois de o de autenticação tentar o refresh.
+- **Refresh único:** `AuthService.refreshAccessToken()` guarda o refresh em andamento num `Observable` com `shareReplay`; chamadas simultâneas recebem o mesmo resultado (teste obrigatório 10).
+- **`returnUrl`:** só caminhos internos (`/algo`, nunca `//site`) são aceitos, para evitar *open redirect*.
+- **Botão "Entrar como demo":** fica para o M5, junto com `POST /api/auth/demo`.
