@@ -62,3 +62,28 @@ public static class AuthTestHelpers
         return header?[(CookieName.Length + 1)..].Split(';')[0];
     }
 }
+
+/// <summary>Cliente HTTP já autenticado como um usuário novo (com as categorias padrão).</summary>
+public sealed record TestUser(HttpClient Client, AuthResponse Auth);
+
+public static class TestUsers
+{
+    public static async Task<TestUser> CreateAsync(ApiFactory factory)
+    {
+        var client = factory.CreateApiClient();
+        var (auth, _) = await client.RegisterAsync();
+        client.DefaultRequestHeaders.Authorization =
+            new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", auth.AccessToken);
+        return new TestUser(client, auth);
+    }
+}
+
+/// <summary>Mesmas opções de JSON da API: camelCase e enums como texto.</summary>
+public static class TestJson
+{
+    public static System.Text.Json.JsonSerializerOptions Options { get; } =
+        new(System.Text.Json.JsonSerializerDefaults.Web)
+        {
+            Converters = { new System.Text.Json.Serialization.JsonStringEnumConverter() },
+        };
+}

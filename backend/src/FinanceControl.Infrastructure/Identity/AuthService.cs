@@ -44,6 +44,10 @@ public sealed class AuthService(
             CreatedAt = timeProvider.GetUtcNow(),
         };
 
+        // Usuário e categorias padrão são gravados juntos: se algo falhar, nada fica pela metade.
+        // (O UserManager usa este mesmo AppDbContext, então a transação vale para os dois.)
+        await using var transaction = await db.Database.BeginTransactionAsync(cancellationToken);
+
         // CreateAsync valida a senha com as regras do Identity e grava só o hash (PBKDF2), nunca a senha.
         var result = await userManager.CreateAsync(user, request.Password);
         if (!result.Succeeded)
@@ -57,8 +61,13 @@ public sealed class AuthService(
             throw new BusinessRuleException(string.Join(" ", result.Errors.Select(e => e.Description)));
         }
 
+        // Todo usuário novo começa com as categorias padrão (PRD RF-03).
+        db.Categories.AddRange(DefaultCategories.CreateFor(user.Id));
+        var authResult = await IssueTokensAsync(user, familyId: Guid.CreateVersion7(), cancellationToken);
+        await transaction.CommitAsync(cancellationToken);
+
         logger.LogInformation("Usuário {UserId} cadastrado", user.Id);
-        return await IssueTokensAsync(user, familyId: Guid.CreateVersion7(), cancellationToken);
+        return authResult;
     }
 
     public async Task<AuthResult> LoginAsync(LoginRequest request, CancellationToken cancellationToken)

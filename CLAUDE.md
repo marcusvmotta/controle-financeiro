@@ -48,9 +48,10 @@ cd frontend && npx ng lint && npx ng test --watch=false && npx ng build
 
 ## Status atual
 
-- Concluídos: PRD, TRD, **M0 (setup)** e **M1 (autenticação)**: backend (M1a) e frontend (M1b).
-- Próximo: **M2 (contas e categorias)**: entidades `Account` e `Category`, query filter global por usuário, CRUDs, cópia das categorias padrão no cadastro, testes obrigatórios 1 e 2 (isolamento entre usuários), menu lateral no `Shell` e telas no Angular. Ver [docs/trd/modulos/02-contas.md](docs/trd/modulos/02-contas.md) e [docs/trd/modulos/03-categorias.md](docs/trd/modulos/03-categorias.md).
-- Adiados: cópia das categorias padrão no cadastro (M2); `POST /api/auth/demo` e o botão "Entrar como demo" (M5); Content-Security-Policy no Nginx (M5).
+- Concluídos: PRD, TRD, **M0 (setup)**, **M1 (autenticação)** e **M2a (contas e categorias no backend)**.
+- Próximo: **M2b (contas e categorias no frontend)**: menu lateral no `Shell`, páginas `/accounts` (cards com saldo, total, mostrar arquivadas, diálogo de criar/editar, excluir → oferecer arquivar no 409) e `/categories` (abas Despesas/Receitas, diálogo com seletor de cor e ícone). Ver [docs/trd/05-frontend.md](docs/trd/05-frontend.md), [docs/trd/modulos/02-contas.md](docs/trd/modulos/02-contas.md) e [docs/trd/modulos/03-categorias.md](docs/trd/modulos/03-categorias.md).
+- Isolamento entre usuários: toda entidade nova com dono deve implementar `IUserOwned` (query filter automático) e ganhar casos em `UserIsolationTests`.
+- Adiados: saldo com transações e bloqueio de exclusão de conta/categoria com transações (M3); `POST /api/auth/demo` e o botão "Entrar como demo" (M5); Content-Security-Policy no Nginx (M5).
 - Testes de integração usam Testcontainers: **o Docker precisa estar rodando** para `dotnet test`.
 - Em aberto: T10 (dados temporários da importação, Fase 2). Avaliar uma biblioteca de asserções de código aberto (FluentAssertions v8 mudou de licença).
 

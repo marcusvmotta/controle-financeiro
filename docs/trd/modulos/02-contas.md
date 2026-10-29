@@ -70,3 +70,8 @@ db.Accounts
 - Página `/accounts`: cards com nome, ícone, cor e saldo atual; total no topo; alternância "mostrar arquivadas".
 - Formulário em `mat-dialog` para criar e editar.
 - Excluir: se a API responder `409`, oferecer "Arquivar em vez disso".
+
+## Nota de implementação (M2)
+
+- Até o M3, `currentBalance` = `initialBalance` (ainda não há transações). O cálculo com transações e o bloqueio de exclusão de conta com transações (`409`) entram no M3.
+- A soma do `totalBalance` é feita em memória sobre a lista já carregada (poucas contas por usuário).

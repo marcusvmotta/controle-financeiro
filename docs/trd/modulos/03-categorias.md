@@ -43,3 +43,9 @@
 - Página `/categories` com duas abas (`mat-tab-group`): Despesas e Receitas.
 - Lista com cor, ícone, nome e quantidade de transações.
 - Formulário em `mat-dialog` com seletor de cor e de ícone.
+
+## Nota de implementação (M2)
+
+- As categorias padrão ficam em `Domain/Entities/DefaultCategories.cs` e são copiadas no cadastro, na mesma transação de banco que cria o usuário.
+- Até o M3, `transactionCount` é sempre `0`, e a exclusão é sempre permitida. O bloqueio de exclusão com transações (`409`) entra no M3.
+- Usuários cadastrados antes do M2 não receberam as categorias padrão (só afeta bancos de desenvolvimento).

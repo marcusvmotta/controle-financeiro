@@ -54,7 +54,7 @@ Requisito crítico do PRD (RNF-02). Três camadas de proteção:
 
 1. **Query filter global:** toda entidade com `UserId` recebe no `AppDbContext`
    ```csharp
-   builder.HasQueryFilter(e => e.UserId == _currentUser.UserId);
+   builder.HasQueryFilter(e => e.UserId == CurrentUserId);
    ```
    Qualquer consulta, inclusive de outra conta ou categoria, só enxerga dados do usuário logado.
 2. **Gravação:** o `UserId` é atribuído pelo service a partir do `ICurrentUser`. Os DTOs de entrada **não têm** campo `userId`.
@@ -100,3 +100,10 @@ X-Frame-Options: DENY
 - Marcado com `is_demo = true`.
 - Não pode trocar senha, e-mail nem excluir a conta (`403` com mensagem explicativa, já que aqui o recurso é do próprio usuário).
 - Login via `POST /api/auth/demo`, que só existe quando `Demo:Enabled=true`.
+
+## Nota de implementação (M2)
+
+- O filtro é aplicado **automaticamente** a toda entidade que implementa `IUserOwned` (Domain), num laço em `AppDbContext.OnModelCreating`. Uma entidade nova só precisa implementar a interface.
+- Sem usuário autenticado, `CurrentUserId` é `Guid.Empty`: nenhuma linha corresponde, e nada vaza.
+- `RefreshToken` **não** é `IUserOwned` de propósito: o refresh acontece sem usuário autenticado.
+- O teste `UserIsolationTests` foi validado com uma "sabotagem": desligando o filtro, os 3 testes falham.

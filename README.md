@@ -4,7 +4,7 @@
 
 Sistema web de controle financeiro pessoal: registre receitas e despesas em várias contas, organize por categorias e descubra **para onde o seu dinheiro está indo**.
 
-> 🚧 Em construção. Marco atual: **M1 (autenticação)**. Veja o [roadmap](docs/prd/02-escopo-e-roadmap.md).
+> 🚧 Em construção. Marco atual: **M2 (contas e categorias)**. Veja o [roadmap](docs/prd/02-escopo-e-roadmap.md).
 
 ## Stack
 

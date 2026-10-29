@@ -1,3 +1,4 @@
+using FinanceControl.Application.Abstractions;
 using FinanceControl.Application.Features.Auth;
 using FinanceControl.Infrastructure.Identity;
 using FinanceControl.Infrastructure.Persistence;
@@ -26,6 +27,9 @@ public static class DependencyInjection
         services.AddDbContext<AppDbContext>(options => options
             .UseNpgsql(connectionString)
             .UseSnakeCaseNamingConvention());
+
+        // Os services da Application pedem IAppDbContext; recebem o mesmo AppDbContext da requisição.
+        services.AddScoped<IAppDbContext>(provider => provider.GetRequiredService<AppDbContext>());
 
         // ---- Identity (ADR-004): só o núcleo, sem cookies de login nem telas prontas ----
         services

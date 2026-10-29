@@ -8,7 +8,7 @@
 - Chaves primárias `uuid`, geradas na aplicação com **UUID v7** (`Guid.CreateVersion7()`): ordenáveis por tempo, o que é melhor para índices do que UUID aleatório.
 - Enums gravados como **texto** (`HasConversion<string>()`): o banco fica legível e reordenar o enum no C# não corrompe dados.
 - Toda tabela de dados do usuário tem `user_id` e um **query filter global** por usuário ([04-seguranca.md](04-seguranca.md#isolamento-entre-usuários)).
-- `created_at` / `updated_at` preenchidos automaticamente no `SaveChangesAsync`.
+- `created_at` / `updated_at` preenchidos automaticamente no `SaveChangesAsync` para entidades `IAuditable`.
 - Chaves estrangeiras com `ON DELETE RESTRICT`, exceto onde indicado. Nada é apagado em cascata por acidente.
 
 ## Diagrama ER (MVP)
@@ -115,7 +115,7 @@ Gerenciada pelo ASP.NET Core Identity ([ADR-004](adr/004-identity-e-jwt.md)); a 
 | `icon` | `varchar(40)` | nome de um ícone do Material Symbols |
 | `is_archived` | `boolean` | padrão `false` |
 
-Índices: `(user_id)`; **único** `(user_id, lower(name))` para não haver duas contas com o mesmo nome.
+Índices: **único** `(user_id, normalized_name)` para não haver duas contas com o mesmo nome. `normalized_name` é o nome sem espaços nas pontas e em maiúsculas (`NameNormalizer`), o mesmo truque do `normalized_email` do Identity, e evita índice por expressão (`lower(name)`), que o EF Core não modela diretamente.
 
 ### `categories`
 | Coluna | Tipo | Regras |
@@ -124,7 +124,7 @@ Gerenciada pelo ASP.NET Core Identity ([ADR-004](adr/004-identity-e-jwt.md)); a 
 | `type` | `varchar(10)` | `Income` ou `Expense` |
 | `color`, `icon`, `is_archived` | | iguais a `accounts` |
 
-Índices: **único** `(user_id, type, lower(name))`.
+Índices: **único** `(user_id, type, normalized_name)`.
 
 ### `transactions`
 | Coluna | Tipo | Regras |
